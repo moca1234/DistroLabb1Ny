@@ -19,10 +19,8 @@ public class RemoveItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
-        // Hämta alla objekt
         ArrayList<Product> MyProducts = UserHandler.getMyProducts(username);
         session.setAttribute("myProducts", MyProducts);
-        // Skicka vidare till removeItem.jsp
         RequestDispatcher dispatcher = request.getRequestDispatcher("removeItem.jsp");
         dispatcher.forward(request, response);
     }
@@ -31,9 +29,7 @@ public class RemoveItemServlet extends HttpServlet {
         String username = (String) session.getAttribute("username");
         int userId = UserHandler.getUserByUsername(username).getId();
         int productId = Integer.parseInt(request.getParameter("productId"));
-        // Ta bort objektet
         boolean success = UserHandler.removeProducts(userId, productId);
-        // Redirecta tillbaka till removeItem.jsp med meddelande
         if (success) {
             response.sendRedirect("removeItem.jsp?message=Product removed successfully");
         } else {
